@@ -1,0 +1,84 @@
+= A Python Project
+
+== 题目
+
+一、假设公司的部门（Department）结构如下所示：
+
+....
+- Android 研发部        -> 客户端研发部 -> 研发部 -> 公司
+- iOS 研发部            -> 客户端研发部 -> 研发部 -> 公司
+- API 研发部            -> 服务端研发部 -> 研发部 -> 公司
+- Infrastructre 研发部  -> 服务端研发部 -> 研发部 -> 公司
+....
+
+其中，「->」符号的左侧是子（Child）部门，右侧是上级（Parent）部门，每个部门仅有一个上级部门。
+
+1. 请设计关系型数据库表结构来存储上述部门结构。
+2. 假设每名员工（Employee）仅属于某一个部门，请设计关系型数据库表结构来存储员工与部门的关系。
+3. 编写程序实现：给定员工和部门，给出员工是否在这个部门。
+
+二、现有资源（Resource）和权限（Permission）表，字段如下：
+
+.资源表
+[cols="2", width="50%", frame="topbot", options="header"]
+|====
+| 字段 | 含义
+| id | 主键
+| name | 资源名称
+|====
+
+
+.权限表
+[cols="2", width="50%", frame="topbot", options="header"]
+|====
+| 字段 | 含义
+| id | 主键
+| resource_id | 资源 ID
+| action | 操作
+|====
+
+1. 请设计关系型数据库表结构实现『为某个部门赋予权限』的需求。
+2. 编写代码实现：给定员工和资源，查询其所具有该资源的权限列表。
+
+三、假设部门（Department）表上有 `leader_id` 字段，示例如下：
+
+.部门表
+[cols="2", width="50%", frame="topbot", options="header"]
+|====
+| 字段 | 含义
+| id | 主键
+| name | 部门名称
+| leader_id | Leader 的 ID
+|====
+
+1. 请设计关系型数据库表结构及编写相关代码，实现『赋予「某个部门的所有上级」某个权限』。
+2. 编写代码实现：给定员工和资源，查询其所具有的该资源的权限列表。
+
+四、使用 `redis` 为上述操作增加缓存以提升性能。
+
+== 运行
+
+- 使用基于 docker 的开发环境
+  * 进入 `docker` 目录下，执行命令：`docker-compose -p lesson1 up web`
+- Flask-Migrate 用于数据库表结构迁移： https://flask-migrate.readthedocs.io[]
+  * `python manage.py db migrate`
+  * `python manage.py db upgrade`
+- pytest 用于 TDD 开发： https://pytest.org/[]
+
+
+== 答题要求
+
+=== 字段命名规范
+
+. 后缀与类型：
+.. 主键、外键等使用 `_id` 后缀，为整型。
+.. 以 `_status`、`_type` 为后缀的字段名明确为整型，如枚举，按位存储等。
+.. 后缀 `_time` 为时间型、后缀 `_date` 为日期型，譬如不要使用 `start_date` 作为一个时间型字段。
+.. 以 `key`、`title`、`label`、`name`、`description`、`uri`、`url` 等为后缀的字段名明确为字符型。
+. 不要使用对象名作为**简单类型**的字段名，为其增加可识别其类型的后缀，如：uri、key 等。
+.. 头像不要使用 `avatar` 作为字段名，使用 `avatar_key` 或者 `avatar_uri`。
+.. 字段名 `user` 不知道是 `user_id` 还是 `user_name`。 
+
+=== 编码规范
+
+代码必须符合 PEP8 规范，可忽略一下几项：`--ignore=W293,E402,E501,E251`。

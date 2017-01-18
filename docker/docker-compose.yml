@@ -1,0 +1,15 @@
+version: "2"
+services:
+ web:
+  build: image
+  command: sh bin/run-test
+  working_dir: /lesson1
+  volumes:
+   - ..:/lesson1
+  links:
+   - mysql
+ mysql:
+  image: mysql
+  environment:
+   MYSQL_DATABASE: lesson1
+   MYSQL_ROOT_PASSWORD: dev
